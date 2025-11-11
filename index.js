@@ -114,3 +114,195 @@ function gameObject() {
         },
     };
 }
+
+// the helper function to find stats
+
+function findPlayerStats(playerName) {
+    const game = gameObject();
+    for (const teamKey of Object.keys(game)) {
+        const team = game[teamKey];
+        if (playerName in team.players) {
+            return team.players[playerName]; // return teh stats object
+        }
+    }
+    return null; // player not found
+}
+//find points scored
+function numPointsScored(playerName) {
+    const stats = findPlayerStats(playerName);
+    if (stats) {return stats.points;
+
+     } else {
+        return null;
+    }
+}
+//test example
+console.log (numPointsScored("Alan Anderson"));
+
+// find shoe sizes
+function shoeSize(playerName) {
+    const stats = findPlayerStats(playerName);
+    if (stats) {return stats.shoe
+         } else {
+        return null;
+    }
+}
+console.log (shoeSize("Alan Anderson"));
+
+//find team colors
+function teamColors(teamName) {
+    const game = gameObject();
+    for (const teamKey of Object.keys(game)) {
+        const team = game[teamKey];
+        if (team.teamName === teamName) {
+            return team.colors;
+        }
+    }
+    return null;
+}
+// find team names
+function teamNames() {
+    const game = gameObject();
+    const names = [];
+    for (const teamKey of Object.keys(game)) {
+        const team = game[teamKey];
+        names.push(team.teamName);
+    }
+    return names;
+}
+
+// test 
+console.log(teamColors("Charlotte Hornets"));
+console.log(teamNames());
+
+//Find player numbers
+function playerNumbers(teamName) {
+    const game = gameObject();
+    const numbers = [];
+    for (const teamKey of Object.keys(game)) {
+        const team = game[teamKey];
+        if (team.teamName === teamName) {
+            for (const playerName in team.players) {
+                numbers.push(team.players[playerName].number);
+            }
+            return numbers;
+        }
+    }
+    return null;
+}
+//test 
+console.log(playerNumbers("Brooklyn Nets"));
+
+function playerStats(playerName) {
+    return findPlayerStats(playerName);
+}
+//test
+console.log(playerStats("Ben Gordon"));
+
+//find the biggest shoe sizes rebounds
+
+function bigShoeRebounds() {
+    const game = gameObject(); 
+    let maxShoe = 0;
+    let rebounds = 0;
+    for (const teamKey of Object.keys(game)) {
+        const team = game[teamKey];
+        for (const playerName in team.players) {
+            const player = team.players[playerName];
+             if (player.shoe > maxShoe) {
+                maxShoe = player.shoe;
+                rebounds = player.rebounds;
+        }
+    }
+    return rebounds;
+}
+}
+//test
+console.log(bigShoeRebounds());
+
+//Top Scorer
+function mostPointsScored() {
+    const game = gameObject();
+    let maxPoints = 0;
+    let topPlayer = '';
+
+    for (const teamKey of Object.keys(game)) {
+        const team = game[teamKey];
+        for (const playerName in team.players) {
+            const player = team.players[playerName];
+            if (player.points > maxPoints) {
+                maxPoints = player.points;
+                topPlayer = playerName;
+            }
+        }
+    }
+
+    return topPlayer;
+}
+
+//test 
+console.log(mostPointsScored());
+
+//Which team won
+function winningTeam() {
+    const game = gameObject();
+    const teamPoints = {};
+
+    for (const teamKey of Object.keys(game)) {
+        const team = game[teamKey];
+        let totalPoints = 0;
+        for (const playerName in team.players) {
+            totalPoints += team.players[playerName].points;
+        }
+        teamPoints[team.teamName] = totalPoints;
+    }
+
+    // Determine which team has more points
+    return teamPoints[Object.keys(teamPoints)[0]] > teamPoints[Object.keys(teamPoints)[1]]
+        ? Object.keys(teamPoints)[0]
+        : Object.keys(teamPoints)[1];
+}
+//test
+console.log(winningTeam());
+
+//long name
+function playerWithLongestName() {
+    const game = gameObject();
+    let longestName = '';
+
+    for (const teamKey of Object.keys(game)) {
+        const team = game[teamKey];
+        for (const playerName in team.players) {
+            if (playerName.length > longestName.length) {
+                longestName = playerName;
+            }
+        }
+    }
+
+    return longestName;
+}
+//test 
+console.log(playerWithLongestName());
+
+//does the longest name steal
+function doesLongNameStealATon() {
+    const game = gameObject();
+    const longName = playerWithLongestName();
+
+    let maxSteals = 0;
+
+    for (const teamKey of Object.keys(game)) {
+        const team = game[teamKey];
+        for (const playerName in team.players) {
+            const player = team.players[playerName];
+            if (player.steals > maxSteals) {
+                maxSteals = player.steals;
+            }
+        }
+    }
+
+    const longNameSteals = findPlayerStats(longName).steals;
+    return longNameSteals === maxSteals;
+} 
+    //test
+    console.log(doesLongNameStealATon())
